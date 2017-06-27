@@ -3,7 +3,6 @@ import discord
 import json
 import properties
 import random
-import sys
 import urllib.request
 
 client = discord.Client()
@@ -28,14 +27,16 @@ def getTrendingGif(gifNumber, maxRecords):
     gifUrl = gifData["data"][gifNumber]["url"]
     return gifUrl
 
+def roll(maxRoll):
+    return random.randint(1, maxRoll)
+
+
 @client.event
 async def on_ready():
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
     print('------')
-    sys.stdout.flush()
-
 
 @client.event
 async def on_message(message):
@@ -53,8 +54,27 @@ async def on_message(message):
         response = getGif(searchTerm)
     elif cmd.startswith(topTrendingGifTrigger):
         response = getTrendingGif(0, "1")
-    elif cmd == rollTriggerString:
-        response = random.randint(1, 100)
+    elif cmd.startswith(rollTriggerString):
+        maxRoll = 100
+        if (len(message.content) > len(rollTriggerString)):
+            maxRoll = int(cmd[len(rollTriggerString):].lstrip())
+
+        response = roll(maxRoll)
+    elif cmd == 'randomwinner':
+        activeMembers = []
+        for member in client.get_all_members():
+            if member.status == discord.Status.online and member.name != 'NeatBot':
+                activeMembers.append(member)
+
+        highRoll = 0
+        winner = ""
+        for member in activeMembers:
+            currRoll = roll(100)
+            if currRoll > highRoll:
+                highRoll = currRoll
+                winner = member.name
+
+        response = winner + " wins with a roll of " + str(highRoll)
 
     if response != "":
         await client.send_message(message.channel, response)
