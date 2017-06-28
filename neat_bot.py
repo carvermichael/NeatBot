@@ -92,4 +92,15 @@ async def on_message(message):
     if response != "":
         await client.send_message(message.channel, response)
 
+@client.event
+async def on_member_update(before, after):
+    response = ""
+
+    # The member started or changed games
+    if before.game is None and after.game is not None:
+        response = "Hey " + after.name + ", have fun playing " + after.game.name + ". Thanks for inviting the rest of us."
+
+    if response != "":
+        await client.send_message(discord.utils.get(client.get_all_channels(), server__name='Steamy Pile', name='general'), response)
+
 client.run(properties.token)
