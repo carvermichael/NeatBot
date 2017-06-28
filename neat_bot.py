@@ -9,6 +9,7 @@ client = discord.Client()
 giphyApiBase = "http://api.giphy.com/v1/gifs/"
 giphyApiKey = properties.giphyToken
 gifTriggerString = "gif me"
+notifyTriggerString = "pubg"
 memberToNotify = "snacks#7277"
 rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
@@ -81,11 +82,11 @@ async def on_message(message):
                 winner = member.name
 
         response = winner + " wins with a roll of " + str(highRoll)
-    elif "pubg" in cmd:
+    elif notifyTriggerString in cmd:
         channel = message.channel
         member = channel.server.get_member_named(memberToNotify)
-        # Only notify if the member is active
-        if member in getActiveMembers():
+        # Only notify if the member is offline
+        if member not in getActiveMembers():
             await client.send_message(member, 'PUBG was mentioned in ' + channel.name)
 
     if response != "":
