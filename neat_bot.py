@@ -12,6 +12,13 @@ gifTriggerString= "gif me"
 rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
 
+def getActiveMembers():
+    activeMembers = []
+    for member in client.get_all_members():
+        if member.status == discord.Status.online and member.name != 'NeatBot':
+            activeMembers.append(member)
+    return activeMembers
+
 def getJson(url):
     response = urllib.request.urlopen(url)
     data = json.load(response)
@@ -40,6 +47,9 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if message.author.name == 'NeatBot':
+        return
+
     response = ""
     cmd = message.content.lower()
 
@@ -61,20 +71,18 @@ async def on_message(message):
 
         response = roll(maxRoll)
     elif cmd == 'randomwinner':
-        activeMembers = []
-        for member in client.get_all_members():
-            if member.status == discord.Status.online and member.name != 'NeatBot':
-                activeMembers.append(member)
-
         highRoll = 0
         winner = ""
-        for member in activeMembers:
+        for member in getActiveMembers():
             currRoll = roll(100)
             if currRoll > highRoll:
                 highRoll = currRoll
                 winner = member.name
 
         response = winner + " wins with a roll of " + str(highRoll)
+    elif "pubg" in cmd:
+        channel = message.channel
+        await client.send_message(channel.server.get_member_named("snacks#7277"), 'PUBG was mentioned in ' + channel.name)
 
     if response != "":
         await client.send_message(message.channel, response)
