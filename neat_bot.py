@@ -14,6 +14,7 @@ memberToNotify = "snacks#7277"
 rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
 
+
 def getActiveMembers():
     activeMembers = []
     for member in client.get_all_members():
@@ -21,20 +22,24 @@ def getActiveMembers():
             activeMembers.append(member)
     return activeMembers
 
+
 def getJson(url):
     response = urllib.request.urlopen(url)
     data = json.load(response)
-    return data    
+    return data
+
 
 def getGif(searchTerm):
-    gifData = getJson(giphyApiBase + "random?api_key=" + giphyApiKey + "&tag="+searchTerm+"&rating=G")
+    gifData = getJson(giphyApiBase + "random?api_key=" + giphyApiKey + "&tag=" + searchTerm + "&rating=G")
     gifUrl = gifData["data"]["url"]
     return gifUrl
 
+
 def getTrendingGif(gifNumber, maxRecords):
-    gifData = getJson(giphyApiBase + "trending?api_key="+giphyApiKey+"&limit="+maxRecords+"&rating=G")
+    gifData = getJson(giphyApiBase + "trending?api_key=" + giphyApiKey + "&limit=" + maxRecords + "&rating=G")
     gifUrl = gifData["data"][gifNumber]["url"]
     return gifUrl
+
 
 def roll(maxRoll):
     return random.randint(1, maxRoll)
@@ -47,17 +52,16 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
+
 @client.event
 async def on_message(message):
-    if message.author.name == 'NeatBot':
+    if message.author.bot:
         return
 
     response = ""
     cmd = message.content.lower()
 
-    if cmd == '!neat':
-        response = '<@' + message.author.id + '> NEAT!'
-    elif cmd == 'hey neatbot':
+    if cmd == 'hey neatbot':
         response = getGif("hello")
     elif cmd.startswith(gifTriggerString):
         searchTerm = ""
@@ -88,9 +92,12 @@ async def on_message(message):
         # Only notify if the member is offline
         if member not in getActiveMembers():
             await client.send_message(member, 'PUBG was mentioned in ' + channel.name)
+    elif 'neat' in cmd:
+        response = '<@' + message.author.id + '> NEAT!'
 
     if response != "":
         await client.send_message(message.channel, response)
+
 
 @client.event
 async def on_member_update(before, after):
@@ -101,6 +108,8 @@ async def on_member_update(before, after):
         response = "Hey " + after.name + ", have fun playing " + after.game.name + ". Thanks for inviting the rest of us."
 
     if response != "":
-        await client.send_message(discord.utils.get(client.get_all_channels(), server__name='Steamy Pile', name='general'), response)
+        await client.send_message(
+            discord.utils.get(client.get_all_channels(), server__name='Steamy Pile', name='general'), response)
 
-client.run(properties.token)
+
+client.run(properties.neatbotToken)
