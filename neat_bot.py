@@ -18,7 +18,7 @@ topTrendingGifTrigger = "top trending gif"
 def getActiveMembers():
     activeMembers = []
     for member in client.get_all_members():
-        if member.status == discord.Status.online and member.name != 'NeatBot':
+        if member.status == discord.Status.online and not member.bot:
             activeMembers.append(member)
     return activeMembers
 
