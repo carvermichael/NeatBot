@@ -104,7 +104,7 @@ async def on_member_update(before, after):
     response = ""
 
     # The member started or changed games
-    if before.game is None and after.game is not None:
+    # if before.game is None and after.game is not None:
         # Disabling the response for now to avoid annoyance
         #response = "Hey " + after.name + ", have fun playing " + after.game.name + ". Thanks for inviting the rest of us."
 
