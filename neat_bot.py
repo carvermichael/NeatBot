@@ -30,13 +30,15 @@ def getJson(url):
 
 
 def getGif(searchTerm):
-    gifData = getJson(giphyApiBase + "random?api_key=" + giphyApiKey + "&tag=" + searchTerm + "&rating=G")
+    params = urllib.parse.urlencode({"tag":searchTerm,"rating":"G"})
+    gifData = getJson(giphyApiBase + "random?api_key=" + giphyApiKey + "&" + params)
     gifUrl = gifData["data"]["url"]
     return gifUrl
 
 
 def getTrendingGif(gifNumber, maxRecords):
-    gifData = getJson(giphyApiBase + "trending?api_key=" + giphyApiKey + "&limit=" + maxRecords + "&rating=G")
+    params = urllib.parse.urlencode({"limit":maxRecords,"rating":"G"})
+    gifData = getJson(giphyApiBase + "trending?api_key=" + giphyApiKey + "&" + params)
     gifUrl = gifData["data"][gifNumber]["url"]
     return gifUrl
 
@@ -92,8 +94,6 @@ async def on_message(message):
         # Only notify if the member is offline
         if member not in getActiveMembers():
             await client.send_message(member, 'PUBG was mentioned in ' + channel.name)
-    elif 'neat' in cmd:
-        response = '<@' + message.author.id + '> NEAT!'
 
     if response != "":
         await client.send_message(message.channel, response)
