@@ -13,6 +13,7 @@ notifyTriggerString = "pubg"
 memberToNotify = "snacks#7277"
 rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
+fillScreenImageUrl = "https://i.imgur.com/jlFXbsF.png"
 
 
 def getActiveMembers():
@@ -88,6 +89,8 @@ async def on_message(message):
                 winner = member.name
 
         response = winner + " wins with a roll of " + str(highRoll)
+    elif cmd == 'fillscreen':
+        response = fillScreenImageUrl
     elif notifyTriggerString in cmd:
         channel = message.channel
         member = channel.server.get_member_named(memberToNotify)
