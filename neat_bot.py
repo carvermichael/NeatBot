@@ -13,6 +13,7 @@ notifyTriggerString = "pubg"
 memberToNotify = "snacks#7277"
 rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
+randomTrendingGifTrigger = "random trending gif"
 fillScreenImageUrl = "https://i.imgur.com/jlFXbsF.png"
 aw_yeahUrl = "https://media.giphy.com/media/4TrBAhZKqVelUxRVcy/giphy.gif"
 
@@ -43,6 +44,10 @@ def getTrendingGif(gifNumber, maxRecords):
     gifData = getJson(giphyApiBase + "trending?api_key=" + giphyApiKey + "&" + params)
     gifUrl = gifData["data"][gifNumber]["url"]
     return gifUrl
+
+def getRandomTrendingGif():
+    trendingGifNumber = random.randint(1, 100) - 1
+    return getTrendingGif(trendingGifNumber, 100)
 
 
 def roll(maxRoll):
@@ -76,6 +81,8 @@ async def on_message(message):
         response = getGif(searchTerm)
     elif cmd.startswith(topTrendingGifTrigger):
         response = getTrendingGif(0, "1")
+    elif cmd.startswith(randomTrendingGifTrigger):
+        response = getRandomTrendingGif()
     elif cmd.startswith(rollTriggerString):
         maxRoll = 100
         if (len(message.content) > len(rollTriggerString)):
