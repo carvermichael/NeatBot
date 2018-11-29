@@ -14,6 +14,7 @@ memberToNotify = "snacks#7277"
 rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
 fillScreenImageUrl = "https://i.imgur.com/jlFXbsF.png"
+aw_yeahUrl = "https://media.giphy.com/media/4TrBAhZKqVelUxRVcy/giphy.gif"
 
 
 def getActiveMembers():
@@ -66,6 +67,8 @@ async def on_message(message):
 
     if cmd == 'hey neatbot':
         response = getGif("hello")
+    elif cmd == 'aw_yeah':
+        response = aw_yeahUrl
     elif cmd.startswith(gifTriggerString):
         searchTerm = ""
         if len(message.content) > len(gifTriggerString):
