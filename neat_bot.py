@@ -13,7 +13,9 @@ notifyTriggerString = "pubg"
 memberToNotify = "snacks#7277"
 rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
+randomTrendingGifTrigger = "random trending gif"
 fillScreenImageUrl = "https://i.imgur.com/jlFXbsF.png"
+aw_yeahUrl = "https://media.giphy.com/media/4TrBAhZKqVelUxRVcy/giphy.gif"
 
 
 def getActiveMembers():
@@ -43,6 +45,10 @@ def getTrendingGif(gifNumber, maxRecords):
     gifUrl = gifData["data"][gifNumber]["url"]
     return gifUrl
 
+def getRandomTrendingGif():
+    trendingGifNumber = random.randint(1, 100) - 1
+    return getTrendingGif(trendingGifNumber, 100)
+
 
 def roll(maxRoll):
     return random.randint(1, maxRoll)
@@ -66,6 +72,8 @@ async def on_message(message):
 
     if cmd == 'hey neatbot':
         response = getGif("hello")
+    elif cmd == 'aw_yeah':
+        response = aw_yeahUrl
     elif cmd.startswith(gifTriggerString):
         searchTerm = ""
         if len(message.content) > len(gifTriggerString):
@@ -73,6 +81,8 @@ async def on_message(message):
         response = getGif(searchTerm)
     elif cmd.startswith(topTrendingGifTrigger):
         response = getTrendingGif(0, "1")
+    elif cmd.startswith(randomTrendingGifTrigger):
+        response = getRandomTrendingGif()
     elif cmd.startswith(rollTriggerString):
         maxRoll = 100
         if (len(message.content) > len(rollTriggerString)):
