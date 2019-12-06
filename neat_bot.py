@@ -15,7 +15,7 @@ rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
 randomTrendingGifTrigger = "random trending gif"
 fillScreenImageUrl = "https://i.imgur.com/jlFXbsF.png"
-aw_yeahUrl = "https://media.giphy.com/media/4TrBAhZKqVelUxRVcy/giphy.gif"
+aw_yeahUrl = "https://media1.giphy.com/media/3nozJyPYl195u/giphy.gif"
 
 
 def getActiveMembers():
