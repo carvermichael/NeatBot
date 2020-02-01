@@ -1,4 +1,3 @@
-import asyncio
 import discord
 import json
 import properties
@@ -16,6 +15,10 @@ topTrendingGifTrigger = "top trending gif"
 randomTrendingGifTrigger = "random trending gif"
 fillScreenImageUrl = "https://i.imgur.com/jlFXbsF.png"
 aw_yeahUrl = "https://media1.giphy.com/media/3nozJyPYl195u/giphy.gif"
+
+listBooksTrigger = "list books"
+addBookTrigger = "add book "
+removeBookTrigger = "remove book "
 
 
 def getActiveMembers():
@@ -45,6 +48,7 @@ def getTrendingGif(gifNumber, maxRecords):
     gifUrl = gifData["data"][gifNumber]["url"]
     return gifUrl
 
+
 def getRandomTrendingGif():
     trendingGifNumber = random.randint(1, 100) - 1
     return getTrendingGif(trendingGifNumber, 100)
@@ -52,6 +56,55 @@ def getRandomTrendingGif():
 
 def roll(maxRoll):
     return random.randint(1, maxRoll)
+
+
+def loadJsonFile():
+    with open('data.json', 'r') as file:
+        return json.load(file)
+
+
+def saveDataJson(data):
+    with open('data.json', 'w') as file:
+        json.dump(data, file)
+
+
+@client.event
+def listBooks():
+    data = loadJsonFile()
+    books = data['books']
+
+    response = ""
+    for book in books:
+        response += book + '\n'
+
+    return response
+
+
+@client.event
+def addBook(bookName):
+    data = loadJsonFile()
+    books = data['books']
+
+    books.append(bookName)
+    data['books'] = books
+
+    saveDataJson(data)
+
+    return "Book Added"
+
+
+@client.event
+def removeBook(bookName):
+    data = loadJsonFile()
+    books = data['books']
+
+    if bookName in books:
+        books.remove(bookName)
+        data['books'] = books
+        saveDataJson(data)
+        return "Book Removed"
+    else:
+        return "Book Not Found"
 
 
 @client.event
@@ -107,6 +160,16 @@ async def on_message(message):
         # Only notify if the member is offline
         if member not in getActiveMembers():
             await client.send_message(member, 'PUBG was mentioned in ' + channel.name)
+    elif cmd.startswith(addBookTrigger):
+        if len(message.content) > len(addBookTrigger):
+            bookName = message.content[len(addBookTrigger):].lstrip()
+            response = addBook(bookName)
+    elif cmd == listBooksTrigger:
+        response = listBooks()
+    elif cmd.startswith(removeBookTrigger):
+        if len(message.content) > len(removeBookTrigger):
+            bookName = message.content[len(removeBookTrigger):].lstrip()
+            response = removeBook(bookName)
 
     if response != "":
         await client.send_message(message.channel, response)

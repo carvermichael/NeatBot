@@ -1,3 +1,5 @@
 properties.py
 .idea
 __pycache__
+*.json
+/venv
