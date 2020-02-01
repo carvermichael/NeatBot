@@ -68,7 +68,6 @@ def saveDataJson(data):
         json.dump(data, file)
 
 
-@client.event
 def listBooks():
     data = loadJsonFile()
     books = data['books']
@@ -80,7 +79,6 @@ def listBooks():
     return response
 
 
-@client.event
 def addBook(bookName):
     data = loadJsonFile()
     books = data['books']
@@ -93,7 +91,6 @@ def addBook(bookName):
     return "Book Added"
 
 
-@client.event
 def removeBook(bookName):
     data = loadJsonFile()
     books = data['books']
