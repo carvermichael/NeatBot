@@ -26,7 +26,7 @@ assignBookTrigger = botName + " assign book "
 assignRandomBookTrigger = botName + " assign random book"
 unassignBookTrigger = botName + " unassign my book"
 getMyBookTrigger = botName + " get my book"
-getAllBooksTrigger = beatName + " list all books"
+getAllBooksTrigger = botName + " list all books"
 
 memberDataFile = "memberData.json"
 bookDataFile = "data.json"
