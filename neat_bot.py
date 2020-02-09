@@ -3,6 +3,7 @@ import json
 import properties
 import random
 import urllib.request
+import bookService
 
 client = discord.Client()
 giphyApiBase = "http://api.giphy.com/v1/gifs/"
@@ -16,10 +17,19 @@ randomTrendingGifTrigger = "random trending gif"
 fillScreenImageUrl = "https://i.imgur.com/jlFXbsF.png"
 aw_yeahUrl = "https://media1.giphy.com/media/3nozJyPYl195u/giphy.gif"
 
+botName = "neatbot"
+
 listBooksTrigger = "list books"
 addBookTrigger = "add book "
 removeBookTrigger = "remove book "
+assignBookTrigger = botName + " assign book "
+assignRandomBookTrigger = botName + " assign random book"
+unassignBookTrigger = botName + " unassign my book"
+getMyBookTrigger = botName + " get my book"
+getAllBooksTrigger = beatName + " list all books"
 
+memberDataFile = "memberData.json"
+bookDataFile = "data.json"
 
 def getActiveMembers():
     activeMembers = []
@@ -57,53 +67,6 @@ def getRandomTrendingGif():
 def roll(maxRoll):
     return random.randint(1, maxRoll)
 
-
-def loadJsonFile():
-    with open('data.json', 'r') as file:
-        return json.load(file)
-
-
-def saveDataJson(data):
-    with open('data.json', 'w') as file:
-        json.dump(data, file)
-
-
-def listBooks():
-    data = loadJsonFile()
-    books = data['books']
-
-    response = ""
-    for book in books:
-        response += book + '\n'
-
-    return response
-
-
-def addBook(bookName):
-    data = loadJsonFile()
-    books = data['books']
-
-    books.append(bookName)
-    data['books'] = books
-
-    saveDataJson(data)
-
-    return "Book Added"
-
-
-def removeBook(bookName):
-    data = loadJsonFile()
-    books = data['books']
-
-    if bookName in books:
-        books.remove(bookName)
-        data['books'] = books
-        saveDataJson(data)
-        return "Book Removed"
-    else:
-        return "Book Not Found"
-
-
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -117,10 +80,11 @@ async def on_message(message):
     if message.author.bot:
         return
 
+    userName = message.author.name
     response = ""
     cmd = message.content.lower()
 
-    if cmd == 'hey neatbot':
+    if cmd == 'hey ' + botName:
         response = getGif("hello")
     elif cmd == 'aw_yeah':
         response = aw_yeahUrl
@@ -160,13 +124,25 @@ async def on_message(message):
     elif cmd.startswith(addBookTrigger):
         if len(message.content) > len(addBookTrigger):
             bookName = message.content[len(addBookTrigger):].lstrip()
-            response = addBook(bookName)
+            response = bookService.addBookToList(bookName)
     elif cmd == listBooksTrigger:
-        response = listBooks()
+        response = bookService.listBooks()
     elif cmd.startswith(removeBookTrigger):
         if len(message.content) > len(removeBookTrigger):
             bookName = message.content[len(removeBookTrigger):].lstrip()
-            response = removeBook(bookName)
+            response = bookService.removeBookFromList(bookName)
+    elif cmd.startswith(assignBookTrigger):
+        if len(message.content) > len(assignBookTrigger):
+            bookName = message.content[len(assignBookTrigger):].lstrip()
+            response = bookService.assignBook(bookName, userName)
+    elif cmd == assignRandomBookTrigger:
+        response = bookService.assignRandomBook(userName)
+    elif cmd == unassignBookTrigger:
+        response = bookService.unassignBook(userName)
+    elif cmd == getMyBookTrigger:
+        response = bookService.getAssignedBook(userName)
+    elif cmd == getAllBooksTrigger:
+        response = bookService.getAllAssignedBooks()
 
     if response != "":
         await client.send_message(message.channel, response)
