@@ -2,4 +2,6 @@ properties.py
 .idea
 __pycache__
 *.json
+*.pyc
 /venv
+.vscode
