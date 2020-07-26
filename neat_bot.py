@@ -22,15 +22,6 @@ rollTriggerString = "!roll"
 topTrendingGifTrigger = "top trending gif"
 randomTrendingGifTrigger = "random trending gif"
 
-#Book Triggers - These are used to call methods in the bookService
-listBooksTrigger = "list books"
-addBookTrigger = "add book "
-removeBookTrigger = "remove book "
-assignBookTrigger = botName + " assign book "
-assignRandomBookTrigger = botName + " assign random book"
-unassignBookTrigger = botName + " unassign my book"
-getMyBookTrigger = botName + " get my book"
-getAllBooksTrigger = botName + " list all books"
 
 #Files - These are used to track state
 memberDataFile = "memberData.json"
@@ -125,30 +116,31 @@ async def on_message(message):
         member = channel.server.get_member_named(memberToNotify)
         # Only notify if the member is offline
         if member not in getActiveMembers():
-            await client.send_message(member, 'PUBG was mentioned in ' + channel.name)
-    elif cmd.startswith(addBookTrigger):
-        if len(message.content) > len(addBookTrigger):
-            bookName = message.content[len(addBookTrigger):].lstrip()
+            await message.channel.send(member, 'PUBG was mentioned in ' + channel.name)
+    elif cmd.startswith(bookService.Triggers.addBookTrigger):
+        if len(message.content) > len(bookService.Triggers.addBookTrigger):
+            bookName = message.content[len(bookService.Triggers.addBookTrigger):].lstrip()
             response = bookService.addBookToList(bookName)
-    elif cmd == listBooksTrigger:
+    elif cmd == bookService.Triggers.listBooksTrigger:
         response = bookService.listBooks()
-    elif cmd.startswith(removeBookTrigger):
-        if len(message.content) > len(removeBookTrigger):
-            bookName = message.content[len(removeBookTrigger):].lstrip()
+    elif cmd.startswith(bookService.Triggers.removeBookTrigger):
+        if len(message.content) > len(bookService.Triggers.removeBookTrigger):
+            bookName = message.content[len(bookService.Triggers.removeBookTrigger):].lstrip()
             response = bookService.removeBookFromList(bookName)
-    elif cmd.startswith(assignBookTrigger):
-        if len(message.content) > len(assignBookTrigger):
-            bookName = message.content[len(assignBookTrigger):].lstrip()
+    elif cmd.startswith(bookService.Triggers.assignBookTrigger):
+        if len(message.content) > len(bookService.Triggers.assignBookTrigger):
+            bookName = message.content[len(bookService.Triggers.assignBookTrigger):].lstrip()
             response = bookService.assignBook(bookName, userName)
-    elif cmd == assignRandomBookTrigger:
-        response = bookService.assignRandomBook(userName)
-    elif cmd == unassignBookTrigger:
+    elif cmd == bookService.Triggers.assignRandomBookTrigger:
+        response = bookService.Triggers.bookService.assignRandomBook(userName)
+    elif cmd == bookService.Triggers.unassignBookTrigger:
         response = bookService.unassignBook(userName)
-    elif cmd == getMyBookTrigger:
+    elif cmd == bookService.Triggers.getMyBookTrigger:
         response = bookService.getAssignedBook(userName)
-    elif cmd == getAllBooksTrigger:
+    elif cmd == bookService.Triggers.getAllBooksTrigger:
         response = bookService.getAllAssignedBooks()
-
+    elif "help" in cmd and "book" in cmd:
+        response = bookService.bookHelp()
     if response != "":
         await message.channel.send(response)
 

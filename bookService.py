@@ -19,6 +19,17 @@ class returnMessages:
     bookUnassigned = "{0} unassigned from {1}."
     assignedBook = "{0} is currently reading {1}."
 
+class Triggers:
+    # Book Triggers - These are used to call methods in the bookService
+    listBooksTrigger = "list books"
+    addBookTrigger = "add book "
+    removeBookTrigger = "remove book "
+    assignBookTrigger = "assign book "
+    assignRandomBookTrigger = "assign random book"
+    unassignBookTrigger = "unassign my book"
+    getMyBookTrigger = "get my book"
+    getAllBooksTrigger = "list all books"
+
 def addBookToList(bookName):
     data = loadJsonFile(files.books, {})
     books = data.get(keys.books, [])
@@ -154,3 +165,8 @@ def loadJsonFile(fileName, defaultJson):
 def saveDataJson(fileName, data):
     with open(fileName, 'w') as file:
         json.dump(data, file)
+
+def bookHelp():
+    keys = [i for i in Triggers.__dict__.keys() if i[:1] != '_']
+    return [Triggers.__dict__[x] for x in keys]
+

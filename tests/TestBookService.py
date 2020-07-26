@@ -104,5 +104,22 @@ class TestBookService(unittest.TestCase):
         actual = b.unassignBook("Ethan")
         self.assertEquals(expected, actual)
 
+    def test_helpBook(self):
+        scrubData()
+
+        expected = ["list books",
+                    "add book ",
+                    "remove book ",
+                    "assign book ",
+                    "assign random book",
+                    "unassign my book",
+                    "get my book",
+                    "list all books"]
+        actual = b.bookHelp()
+
+        for command in expected:
+            assert command in actual
+
+
 if __name__ == '__main__':
     unittest.main()
