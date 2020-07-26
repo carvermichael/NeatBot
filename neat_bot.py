@@ -8,17 +8,21 @@ import bookService
 client = discord.Client()
 giphyApiBase = "http://api.giphy.com/v1/gifs/"
 giphyApiKey = properties.giphyToken
-gifTriggerString = "gif me"
-notifyTriggerString = "pubg"
+
 memberToNotify = "snacks#7277"
-rollTriggerString = "!roll"
-topTrendingGifTrigger = "top trending gif"
-randomTrendingGifTrigger = "random trending gif"
 fillScreenImageUrl = "https://i.imgur.com/jlFXbsF.png"
 aw_yeahUrl = "https://media1.giphy.com/media/3nozJyPYl195u/giphy.gif"
 
 botName = "neatbot"
 
+#Triggers
+gifTriggerString = "gif me"
+notifyTriggerString = "pubg"
+rollTriggerString = "!roll"
+topTrendingGifTrigger = "top trending gif"
+randomTrendingGifTrigger = "random trending gif"
+
+#Book Triggers - These are used to call methods in the bookService
 listBooksTrigger = "list books"
 addBookTrigger = "add book "
 removeBookTrigger = "remove book "
@@ -28,6 +32,7 @@ unassignBookTrigger = botName + " unassign my book"
 getMyBookTrigger = botName + " get my book"
 getAllBooksTrigger = botName + " list all books"
 
+#Files - These are used to track state
 memberDataFile = "memberData.json"
 bookDataFile = "data.json"
 
@@ -145,7 +150,7 @@ async def on_message(message):
         response = bookService.getAllAssignedBooks()
 
     if response != "":
-        await client.send_message(message.channel, response)
+        await message.channel.send(response)
 
 
 @client.event
@@ -158,8 +163,8 @@ async def on_member_update(before, after):
         #response = "Hey " + after.name + ", have fun playing " + after.game.name + ". Thanks for inviting the rest of us."
 
     if response != "":
+        #this doesn't work with discord > 1 - I'm not sure it's used, kinda assuming not due to the server name? funny, haha?
         await client.send_message(
             discord.utils.get(client.get_all_channels(), server__name='Steamy Pile', name='general'), response)
-
 
 client.run(properties.neatbotToken)
