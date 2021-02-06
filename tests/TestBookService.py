@@ -107,14 +107,14 @@ class TestBookService(unittest.TestCase):
     def test_helpBook(self):
         scrubData()
 
-        expected = ["list books",
+        expected = ["list games",
                     "add book ",
                     "remove book ",
                     "assign book ",
                     "assign random book",
                     "unassign my book",
                     "get my book",
-                    "list all books"]
+                    "list all games"]
         actual = b.bookHelp()
 
         for command in expected:

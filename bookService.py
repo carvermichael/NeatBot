@@ -7,7 +7,7 @@ class files:
     books = "data.json"
 
 class keys:
-    books = "books"
+    books = "games"
     assigned = "assignedBook"
 
 class returnMessages:
@@ -21,14 +21,14 @@ class returnMessages:
 
 class Triggers:
     # Book Triggers - These are used to call methods in the bookService
-    listBooksTrigger = "list books"
+    listBooksTrigger = "list games"
     addBookTrigger = "add book "
     removeBookTrigger = "remove book "
     assignBookTrigger = "assign book "
     assignRandomBookTrigger = "assign random book"
     unassignBookTrigger = "unassign my book"
     getMyBookTrigger = "get my book"
-    getAllBooksTrigger = "list all books"
+    getAllBooksTrigger = "list all games"
 
 def addBookToList(bookName):
     data = loadJsonFile(files.books, {})
@@ -63,7 +63,7 @@ def listBooks():
 
     response = ""
     if len(books) == 0:
-        return "No books in list!"
+        return "No games in list!"
 
     for book in books:
         response += book + '\n'
@@ -93,7 +93,7 @@ def assignRandomBook(personName):
     books = bookData.get(keys.books, [])
 
     if len(books) == 0:
-        return "No books in book list to assign."
+        return "No games in book list to assign."
     
     memberData = loadJsonFile(files.members, {})
     memberInfo = memberData.get(personName, {})
