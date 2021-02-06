@@ -28,7 +28,7 @@ class Triggers:
     assignRandomBookTrigger = "assign random book"
     unassignBookTrigger = "unassign my book"
     getMyBookTrigger = "get my book"
-    getAllBooksTrigger = "list all games"
+    getAllBooksTrigger = "list all books"
 
 def addBookToList(bookName):
     data = loadJsonFile(files.books, {})

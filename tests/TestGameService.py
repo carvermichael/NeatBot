@@ -52,10 +52,10 @@ class TestGameService(unittest.TestCase):
         self.assertNotIn(False, [exp in actual for exp in expected])
 
 
-    def test_helpBook(self):
+    def test_helpGame(self):
         scrubData()
 
-        expected = ['list games', 'add game ', 'remove game ']
+        expected = ['list games', 'add game ', 'remove game ', 'game help']
         actual = g.gameHelp()
 
         for command in expected:

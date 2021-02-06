@@ -114,8 +114,9 @@ class TestBookService(unittest.TestCase):
                     "assign random book",
                     "unassign my book",
                     "get my book",
-                    "list all games"]
+                    "list all books"]
         actual = b.bookHelp()
+
 
         for command in expected:
             assert command in actual

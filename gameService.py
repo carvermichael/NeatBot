@@ -19,6 +19,7 @@ class Triggers:
     listGamesTrigger = "list games"
     addGameTrigger = "add game "
     removeGameTrigger = "remove game "
+    gameHelp = "game help"
 
 def addGameToList(gameName):
     data = loadJsonFile(files.games, {})

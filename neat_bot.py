@@ -4,6 +4,7 @@ import properties
 import random
 import urllib.request
 import bookService
+import gameService
 
 client = discord.Client()
 giphyApiBase = "http://api.giphy.com/v1/gifs/"
@@ -147,7 +148,21 @@ async def on_message(message):
     elif "help" in cmd and "book" in cmd:
         response = bookService.bookHelp()
     elif cmd.startswith(botName) and "help" in cmd:
-        response = bookService.bookHelp() + help()
+        response = bookService.bookHelp() + help() + gameService.gameHelp()
+    #gameService
+    elif cmd.startswith(gameService.Triggers.addGameTrigger):
+        if len(message.content) > len(gameService.Triggers.addGameTrigger):
+            gameName = message.content[len(gameService.Triggers.addGameTrigger):].lstrip()
+            response = gameService.addGameToList(gameName)
+    elif cmd.startswith(gameService.Triggers.removeGameTrigger):
+        if len(message.content) > len(gameService.Triggers.removeGameTrigger):
+            gameName = message.content[len(gameService.Triggers.removeGameTrigger):].lstrip()
+            response = gameService.removeGameFromList(gameName)
+    elif cmd.startswith(gameService.Triggers.listGamesTrigger):
+        if len(message.content) > len(gameService.Triggers.listGamesTrigger):
+            response = gameService.listGames()
+    elif cmd.startswith(gameService.Triggers.gameHelp):
+        response = gameService.gameHelp()
     if response != "":
         await message.channel.send(response)
 
