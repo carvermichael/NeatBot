@@ -23,7 +23,7 @@ class TestGameService(unittest.TestCase):
         
         expected = g.returnMessages.gameInList.format(testGameName)
         actual = g.addGameToList(testGameName)
-        self.assertEquals(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_removeGame(self):
         scrubData()
@@ -31,11 +31,11 @@ class TestGameService(unittest.TestCase):
         
         expected = g.returnMessages.gameRemoved.format(testGameName)
         actual = g.removeGameFromList(testGameName)
-        self.assertEquals(expected, actual)
+        self.assertEqual(expected, actual)
         
         expected = g.returnMessages.gameNotInList.format(testGameName)
         actual = g.removeGameFromList(testGameName)
-        self.assertEquals(expected, actual)
+        self.assertEqual(expected, actual)
 
 
     def test_listGames(self):

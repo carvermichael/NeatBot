@@ -24,7 +24,7 @@ class TestBookService(unittest.TestCase):
         
         expected = b.returnMessages.bookInList.format(testBookName)
         actual = b.addBookToList(testBookName)
-        self.assertEquals(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_removeBook(self):
         scrubData()
@@ -32,11 +32,11 @@ class TestBookService(unittest.TestCase):
         
         expected = b.returnMessages.bookRemoved.format(testBookName)
         actual = b.removeBookFromList(testBookName)
-        self.assertEquals(expected, actual)
+        self.assertEqual(expected, actual)
         
         expected = b.returnMessages.bookNotInList.format(testBookName)
         actual = b.removeBookFromList(testBookName)
-        self.assertEquals(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_assignBook(self):
         scrubData()
@@ -68,7 +68,7 @@ class TestBookService(unittest.TestCase):
 
         expected = b.returnMessages.assignedBook.format("Ethan", testBookName)
         actual = b.getAssignedBook("Ethan")
-        self.assertEquals(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_getAllAssignedBooks(self):
         scrubData()
@@ -102,7 +102,7 @@ class TestBookService(unittest.TestCase):
 
         expected = b.returnMessages.bookUnassigned.format(testBookName, "Ethan")
         actual = b.unassignBook("Ethan")
-        self.assertEquals(expected, actual)
+        self.assertEqual(expected, actual)
 
     def test_helpBook(self):
         scrubData()
