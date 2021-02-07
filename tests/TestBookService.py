@@ -107,7 +107,7 @@ class TestBookService(unittest.TestCase):
     def test_helpBook(self):
         scrubData()
 
-        expected = ["list games",
+        expected = ["list books",
                     "add book ",
                     "remove book ",
                     "assign book ",
