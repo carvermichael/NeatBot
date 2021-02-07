@@ -159,7 +159,6 @@ async def on_message(message):
             gameName = message.content[len(gameService.Triggers.removeGameTrigger):].lstrip()
             response = gameService.removeGameFromList(gameName)
     elif cmd.startswith(gameService.Triggers.listGamesTrigger):
-        if len(message.content) > len(gameService.Triggers.listGamesTrigger):
             response = gameService.listGames()
     elif cmd.startswith(gameService.Triggers.gameHelp):
         response = gameService.gameHelp()

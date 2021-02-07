@@ -51,7 +51,6 @@ def removeGameFromList(gameName):
 def listGames():
     data = loadJsonFile(files.games, {})
     games = data.get(keys.games, [])
-
     response = ""
     if len(games) == 0:
         return "No games in list!"

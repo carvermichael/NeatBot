@@ -21,7 +21,7 @@ class returnMessages:
 
 class Triggers:
     # Book Triggers - These are used to call methods in the bookService
-    listBooksTrigger = "list games"
+    listBooksTrigger = "list books"
     addBookTrigger = "add book "
     removeBookTrigger = "remove book "
     assignBookTrigger = "assign book "
@@ -63,7 +63,7 @@ def listBooks():
 
     response = ""
     if len(books) == 0:
-        return "No games in list!"
+        return "No books in list!"
 
     for book in books:
         response += book + '\n'
