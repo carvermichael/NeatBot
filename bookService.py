@@ -148,6 +148,7 @@ def loadJsonFile(fileName, defaultJson):
     try:
         file = open(fileName, 'r')
         x = json.load(file)
+        file.close()
     except IOError as e:
         print("e.errno: " + str(e.errno))
         if e.errno == 2:
@@ -158,7 +159,6 @@ def loadJsonFile(fileName, defaultJson):
     except:
         print("Unexpected error loading file " + fileName + ".", sys.exc_info()[0])
         raise
-
 
     return x
 

@@ -4,6 +4,7 @@ import properties
 import random
 import urllib.request
 import bookService
+import gameService
 
 client = discord.Client()
 giphyApiBase = "http://api.giphy.com/v1/gifs/"
@@ -16,11 +17,12 @@ aw_yeahUrl = "https://media1.giphy.com/media/3nozJyPYl195u/giphy.gif"
 botName = "neatbot"
 
 #Triggers
-gifTriggerString = "gif me"
-notifyTriggerString = "pubg"
-rollTriggerString = "!roll"
-topTrendingGifTrigger = "top trending gif"
-randomTrendingGifTrigger = "random trending gif"
+class Triggers:
+    gifTriggerString = "gif me"
+    notifyTriggerString = "pubg"
+    rollTriggerString = "!roll"
+    topTrendingGifTrigger = "top trending gif"
+    randomTrendingGifTrigger = "random trending gif"
 
 
 #Files - These are used to track state
@@ -63,6 +65,10 @@ def getRandomTrendingGif():
 def roll(maxRoll):
     return random.randint(1, maxRoll)
 
+def help():
+    keys = [i for i in Triggers.__dict__.keys() if i[:1] != '_']
+    return [Triggers.__dict__[x] for x in keys]
+
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -84,19 +90,19 @@ async def on_message(message):
         response = getGif("hello")
     elif cmd == 'aw_yeah':
         response = aw_yeahUrl
-    elif cmd.startswith(gifTriggerString):
+    elif cmd.startswith(Triggers.gifTriggerString):
         searchTerm = ""
-        if len(message.content) > len(gifTriggerString):
-            searchTerm = message.content[len(gifTriggerString):].lstrip()
+        if len(message.content) > len(Triggers.gifTriggerString):
+            searchTerm = message.content[len(Triggers.gifTriggerString):].lstrip()
         response = getGif(searchTerm)
-    elif cmd.startswith(topTrendingGifTrigger):
+    elif cmd.startswith(Triggers.topTrendingGifTrigger):
         response = getTrendingGif(0, "1")
-    elif cmd.startswith(randomTrendingGifTrigger):
+    elif cmd.startswith(Triggers.randomTrendingGifTrigger):
         response = getRandomTrendingGif()
-    elif cmd.startswith(rollTriggerString):
+    elif cmd.startswith(Triggers.rollTriggerString):
         maxRoll = 100
-        if (len(message.content) > len(rollTriggerString)):
-            maxRoll = int(cmd[len(rollTriggerString):].lstrip())
+        if (len(message.content) > len(Triggers.rollTriggerString)):
+            maxRoll = int(cmd[len(Triggers.rollTriggerString):].lstrip())
 
         response = roll(maxRoll)
     elif cmd == 'randomwinner':
@@ -111,7 +117,7 @@ async def on_message(message):
         response = winner + " wins with a roll of " + str(highRoll)
     elif cmd == 'fillscreen':
         response = fillScreenImageUrl
-    elif notifyTriggerString in cmd:
+    elif Triggers.notifyTriggerString in cmd:
         channel = message.channel
         member = channel.server.get_member_named(memberToNotify)
         # Only notify if the member is offline
@@ -141,6 +147,21 @@ async def on_message(message):
         response = bookService.getAllAssignedBooks()
     elif "help" in cmd and "book" in cmd:
         response = bookService.bookHelp()
+    elif cmd.startswith(botName) and "help" in cmd:
+        response = bookService.bookHelp() + help() + gameService.gameHelp()
+    #gameService
+    elif cmd.startswith(gameService.Triggers.addGameTrigger):
+        if len(message.content) > len(gameService.Triggers.addGameTrigger):
+            gameName = message.content[len(gameService.Triggers.addGameTrigger):].lstrip()
+            response = gameService.addGameToList(gameName)
+    elif cmd.startswith(gameService.Triggers.removeGameTrigger):
+        if len(message.content) > len(gameService.Triggers.removeGameTrigger):
+            gameName = message.content[len(gameService.Triggers.removeGameTrigger):].lstrip()
+            response = gameService.removeGameFromList(gameName)
+    elif cmd.startswith(gameService.Triggers.listGamesTrigger):
+            response = gameService.listGames()
+    elif cmd.startswith(gameService.Triggers.gameHelp):
+        response = gameService.gameHelp()
     if response != "":
         await message.channel.send(response)
 
