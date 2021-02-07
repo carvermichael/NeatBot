@@ -7,7 +7,7 @@ class files:
     books = "data.json"
 
 class keys:
-    books = "games"
+    books = "books"
     assigned = "assignedBook"
 
 class returnMessages:
@@ -93,7 +93,7 @@ def assignRandomBook(personName):
     books = bookData.get(keys.books, [])
 
     if len(books) == 0:
-        return "No games in book list to assign."
+        return "No books in book list to assign."
     
     memberData = loadJsonFile(files.members, {})
     memberInfo = memberData.get(personName, {})
